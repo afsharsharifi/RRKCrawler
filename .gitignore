@@ -1,5 +1,4 @@
 .venv
 .vscode
 *json
-main.py
-reader.py
+test*.py

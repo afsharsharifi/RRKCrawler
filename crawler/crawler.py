@@ -53,7 +53,7 @@ class AjaxRequestParser:
 
         if "p_json" not in parsed_body:
             return None
-
+        print(unquote(parsed_body))
         json_payload = unquote(parsed_body["p_json"][0])
         data = json.loads(json_payload)
 
@@ -63,6 +63,7 @@ class AjaxRequestParser:
         region = data["regions"][0]
 
         return {
+            "p_instance": data.get("reportId"),
             "report_id": region.get("reportId"),
             "ajax_columns": region.get("ajaxColumns"),
             "id": region.get("id"),

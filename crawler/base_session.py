@@ -32,41 +32,39 @@ class BaseSession:
         return options
 
     def start_driver(self):
-        """_summary_"""
+        """start the driver with _build_options"""
         self.driver = webdriver.Chrome(options=self._build_options())
         self.driver.get(TARGET_URL)
 
     def stop_driver(self):
-        """_summary_"""
+        """stop the driver"""
         if self.driver:
             self.driver.quit()
 
     def last_n_days_range(self) -> tuple[str, str]:
-        """_summary_
-
+        """
         Returns:
-            tuple[str, str]: _description_
+            tuple[str, str]: from_date, to_date (today)
         """
         today = jdatetime.date.today()
         start_date = today - jdatetime.timedelta(days=self.days - 1)
         return start_date.strftime("%Y/%m/%d"), today.strftime("%Y/%m/%d")
 
     def submit_date_range(self):
-        """_summary_"""
+        """set search form input values and submit"""
         date_from, date_to = self.last_n_days_range()
         self.driver.find_element(By.ID, "P199_NEWSPAPERDATE_AZ").send_keys(date_from)
         self.driver.find_element(By.ID, "P199_NEWSPAPER_TA").send_keys(date_to)
         self.driver.find_element(By.ID, "B912476867105247978").click()
 
     def wait_for_response(self):
-        """_summary_"""
+        """sleep for gived time in __init__"""
         time.sleep(self.sleep)
 
     def extract_body(self) -> dict | None:
-        """_summary_
-
+        """
         Returns:
-            dict | None: _description_
+            dict | None: serialized body, cookie, header
         """
         for request in self.driver.requests:
             if "https://rrk.ir/ords/wwv_flow.ajax?p_context=rrs-front" in request.url and request.method == "POST":
@@ -84,10 +82,9 @@ class BaseSession:
         return None
 
     def run(self) -> dict | None:
-        """_summary_
-
+        """
         Returns:
-            dict | None: _description_
+            dict | None: serialized body, cookie, header
         """
         self.start_driver()
         self.submit_date_range()

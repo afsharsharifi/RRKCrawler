@@ -1,4 +1,4 @@
-"""_summary_"""
+"""project main file that perform all actions"""
 
 import json
 from functools import wraps
@@ -10,7 +10,7 @@ from crawler.base_session import BaseSession
 
 
 def timing(f):
-    """_summary_"""
+    """a decorator for timing main()"""
 
     @wraps(f)
     def wrap(*args, **kw):
@@ -25,7 +25,7 @@ def timing(f):
 
 @timing
 def main():
-    """_summary_"""
+    """get sessions from selenium and make a post request"""
     base_session = BaseSession(headless=False, sleep=15)
     settings = base_session.run()
 
